@@ -9,16 +9,25 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Test
 {
-    public class EmployeeFactoryTest
+    public class EmployeeFactoryTest : IDisposable
     {
+
+        private EmployeeFactory _factory;
+        public EmployeeFactoryTest() 
+        { 
+            _factory = new EmployeeFactory();
+        }
+
+        public void Dispose()
+        {
+            //implement if you have unmanaged Dependencies
+        }
         [Fact]
         public void CreateEmployee_CunstructInternalEmployee_SalaryMustBe2500()
         {
-            //Arrange
-            var employeeFactory = new EmployeeFactory();
 
             //Act
-            var employee = (InternalEmployee)employeeFactory.CreateEmployee("Abdalazim", "Attya");
+            var employee = (InternalEmployee)_factory.CreateEmployee("Abdalazim", "Attya");
 
             //Assert
             Assert.Equal(2500, employee.Salary);
@@ -26,11 +35,8 @@ namespace EmployeeManagement.Test
         [Fact]
         public void CreateEmployee_CunstructInternalEmployee_SalaryMustBeBetween2500_3500()
         {
-            //Arrange
-            var employeeFactory = new EmployeeFactory();
-
             //Act
-            var employee = (InternalEmployee)employeeFactory.CreateEmployee("Abdalazim", "Attya");
+            var employee = (InternalEmployee)_factory.CreateEmployee("Abdalazim", "Attya");
 
             //Assert
             Assert.True(employee.Salary >= 2500 && employee.Salary <= 3500, "The Salary is not in acceptable range brother");
@@ -38,11 +44,9 @@ namespace EmployeeManagement.Test
         [Fact]
         public void CreateEmployee_CunstructInternalEmployee_SalaryMustInRange2500_3500()
         {
-            //Arrange
-            var employeeFactory = new EmployeeFactory();
 
             //Act
-            var employee = (InternalEmployee)employeeFactory.CreateEmployee("Abdalazim", "Attya");
+            var employee = (InternalEmployee)_factory.CreateEmployee("Abdalazim", "Attya");
 
             //Assert
             Assert.InRange(employee.Salary, 2500 ,3500);
@@ -50,11 +54,8 @@ namespace EmployeeManagement.Test
         [Fact]
         public void CreateEmployee_CunstructInternalEmployee_InPrecsion()
         {
-            //Arrange
-            var employeeFactory = new EmployeeFactory();
-
             //Act
-            var employee = (InternalEmployee)employeeFactory.CreateEmployee("Abdalazim", "Attya");
+            var employee = (InternalEmployee)_factory.CreateEmployee("Abdalazim", "Attya");
             employee.Salary = 2500.003m;
             //Assert
             Assert.Equal(employee.Salary, 2500, 2);
@@ -62,11 +63,9 @@ namespace EmployeeManagement.Test
         [Fact]
         public void CreateAnEmployee_IsExternalIsTrue_ReturnTypeMustBeExtrenalEmployee()
         {
-            //Arrange
-            var emploeyeeFactory = new EmployeeFactory();
 
             //Act
-            var employee = emploeyeeFactory.CreateEmployee("Abdalazim", "Attya", "Azimov", true);
+            var employee = _factory.CreateEmployee("Abdalazim", "Attya", "Azimov", true);
 
             //Assert 
             Assert.IsType<ExternalEmployee>(employee);
@@ -74,14 +73,12 @@ namespace EmployeeManagement.Test
         [Fact]
         public void CreateAnEmployee_IsExternalIsTrue_ReturnTypeMustBeEmployee()
         {
-            //Arrange
-            var emploeyeeFactory = new EmployeeFactory();
-
             //Act
-            var employee = emploeyeeFactory.CreateEmployee("Abdalazim", "Attya", "Azimov", true);
+            var employee = _factory.CreateEmployee("Abdalazim", "Attya", "Azimov", true);
 
             //Assert 
             Assert.IsAssignableFrom<Employee>(employee);
         }
+
     }
 }
