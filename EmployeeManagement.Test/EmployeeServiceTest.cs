@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Test
 {
-    public class EmployeeServiceTest : IClassFixture<EmployeeServiceFixture>
+    [Collection("EmplyeeServiceCollection")]
+    public class EmployeeServiceTest //: IClassFixture<EmployeeServiceFixture>
     {
         private readonly EmployeeServiceFixture _employeeServiceFixture;
         public EmployeeServiceTest(EmployeeServiceFixture employeeServiceFixture) 
