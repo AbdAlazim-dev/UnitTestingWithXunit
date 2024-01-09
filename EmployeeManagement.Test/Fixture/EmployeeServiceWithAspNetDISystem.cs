@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Test.Fixture
 {
-    internal class EmployeeServiceWithAspNetDISystem : IDisposable
+    public class EmployeeServiceWithAspNetDISystem : IDisposable
     {
         private readonly ServiceProvider _serviceProvider;
         public IEmployeeService EmployeeService 
