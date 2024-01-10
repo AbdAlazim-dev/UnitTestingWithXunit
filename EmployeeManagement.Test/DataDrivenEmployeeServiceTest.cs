@@ -45,5 +45,34 @@ namespace EmployeeManagement.Test
             });
 
         }
+        [Theory]
+        [InlineData("1fd115cf-f44c-4982-86bc-a8fe2e4ff83e")]
+        [InlineData("37e03ca7-c730-4351-834c-b66f280cdb01")]
+        public void CreateInternalEmployee_InternalEmployeeCreated_MustBeAttendedTheObligotoryCourses(Guid courseId)
+        {
+
+            //Act : Create an internal employee
+            var internalEmployee = _employeeServiceFixture.EmployeeService.CreateInternalEmployee("Abdalazim", "Attya");
+
+            //Assert : Check if the internal employee attended the second obligatory course
+            Assert.Contains(internalEmployee.AttendedCourses,
+                course => course.Id == courseId);
+        }
+        [Theory]
+        [InlineData(200, false)]
+        [InlineData(100, true)]
+        public async Task GiveRise_RiseGiven_EmployeeMinmumRiseGivenMatchesValue(int riseGiven,
+            bool expectedValueFromMinimumRiseGiven)
+        {
+            // Arrange 
+            var internalEmployee = 
+                new InternalEmployee("Abdalazim", "Attya", 2, 2500, false, 1);
+            // Act
+            await _employeeServiceFixture.EmployeeService.GiveRaiseAsync(internalEmployee, riseGiven);
+
+            //Assert
+            Assert.Equal
+                (expectedValueFromMinimumRiseGiven, internalEmployee.MinimumRaiseGiven);
+        }
     }
 }
