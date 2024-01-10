@@ -58,9 +58,32 @@ namespace EmployeeManagement.Test
             Assert.Contains(internalEmployee.AttendedCourses,
                 course => course.Id == courseId);
         }
+        public static IEnumerable<object[]> ExampleTestDrivenData_WithProperty 
+        { 
+            get
+            {
+                return new List<object[]>
+                {
+                    new object[] {100, true},
+                    new object[] {200, false}
+
+                };
+            }
+        }
+        public static IEnumerable<object[]> ExampleTestDrivenData_WithMethod(
+            int testDataInstance)
+        {
+
+            var testdata =  new List<object[]>
+            {
+                new object[] {100, true},
+                new object[] {200, false}
+
+            };
+            return testdata.Take(testDataInstance);
+        }
         [Theory]
-        [InlineData(200, false)]
-        [InlineData(100, true)]
+        [MemberData(nameof(ExampleTestDrivenData_WithMethod), 1)]
         public async Task GiveRise_RiseGiven_EmployeeMinmumRiseGivenMatchesValue(int riseGiven,
             bool expectedValueFromMinimumRiseGiven)
         {
