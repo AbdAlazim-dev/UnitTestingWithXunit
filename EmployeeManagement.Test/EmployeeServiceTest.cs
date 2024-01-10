@@ -3,6 +3,7 @@ using EmployeeManagement.Business.Exceptions;
 using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.Services.Test;
 using EmployeeManagement.Test.Fixture;
+using EmployeeManagement.Test.TestData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,8 +92,10 @@ namespace EmployeeManagement.Test
             //Assert : Check if the internal employee attended the second obligatory course
             Assert.Equal(obligotoryCourses, internalEmployee.AttendedCourses);
         }
-        [Fact]
-        public async Task GiveRise_RiseBellowMinmumGivin_ExceptionMustBeThrown()
+        [Theory]
+        [ClassData(typeof(EmployeeServiceTestData))]
+        public async Task GiveRise_RiseBellowMinmumGivin_ExceptionMustBeThrown(int rise,
+            bool minmumRiseGiven)
         {
 
             var internalEmployee = new InternalEmployee("Abdalazim", "Attya", 1, 2500, false, 1);
@@ -100,7 +103,7 @@ namespace EmployeeManagement.Test
             //Act & Assert
             await Assert.ThrowsAsync<EmployeeInvalidRaiseException>(async () =>
             {
-                await _employeeServiceFixture.EmployeeService.GiveRaiseAsync(internalEmployee, 5);
+                await _employeeServiceFixture.EmployeeService.GiveRaiseAsync(internalEmployee, rise);
             });
 
         }

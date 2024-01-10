@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Business.Exceptions;
 using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.Test.Fixture;
+using EmployeeManagement.Test.TestData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,7 +84,7 @@ namespace EmployeeManagement.Test
             return testdata.Take(testDataInstance);
         }
         [Theory]
-        [MemberData(nameof(ExampleTestDrivenData_WithMethod), 1)]
+        [ClassData(typeof(EmployeeServiceTestData))]
         public async Task GiveRise_RiseGiven_EmployeeMinmumRiseGivenMatchesValue(int riseGiven,
             bool expectedValueFromMinimumRiseGiven)
         {
