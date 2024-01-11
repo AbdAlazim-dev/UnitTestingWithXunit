@@ -9,13 +9,15 @@ namespace EmployeeManagement.Test
 {
     public class CourseTest
     {
-        [Fact]
-        public void CourseConstructor_ConstructCourse_IsNewMustBeTrue()
+        [Theory]
+        [InlineData("How to handle such a thing")]
+        [InlineData("The importance of that thing")]
+        public void CourseConstructor_ConstructCourse_IsNewMustBeTrue(string courseTitle)
         {
             //no arrange we only test class construct
 
             //Acting 
-            var course = new Course("Disaster Management 101");
+            var course = new Course(courseTitle);
 
             //Assert
             Assert.True(course.IsNew);

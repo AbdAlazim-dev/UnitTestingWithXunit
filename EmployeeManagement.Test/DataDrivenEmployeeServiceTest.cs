@@ -84,7 +84,7 @@ namespace EmployeeManagement.Test
             return testdata.Take(testDataInstance);
         }
         [Theory]
-        [ClassData(typeof(EmployeeServiceTestData))]
+        [ClassData(typeof(StronglyTypedEmployeeServiceTestData))]
         public async Task GiveRise_RiseGiven_EmployeeMinmumRiseGivenMatchesValue(int riseGiven,
             bool expectedValueFromMinimumRiseGiven)
         {

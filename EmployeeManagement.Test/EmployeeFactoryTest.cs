@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace EmployeeManagement.Test
 {
@@ -13,33 +14,63 @@ namespace EmployeeManagement.Test
     {
 
         private EmployeeFactory _factory;
-        public EmployeeFactoryTest() 
+        private ITestOutputHelper _output;
+        public EmployeeFactoryTest(ITestOutputHelper output) 
         { 
             _factory = new EmployeeFactory();
+            _output = output;
         }
 
         public void Dispose()
         {
             //implement if you have unmanaged Dependencies
         }
-        [Fact]
-        public void CreateEmployee_CunstructInternalEmployee_SalaryMustBe2500()
+        public static IEnumerable<object[]> TestData
+        {
+            get
+            {
+                return new List<object[]>
+                {
+                    new object[]  { "abdalazim", "attya" },
+                    new object[]  { "abdalasalm", "Mohammed" },
+                    new object[]  { "wow", "Samah" }
+                };
+                
+            }
+        }
+        public static IEnumerable<object[]> TestDataMethod(int howManyTest)
+        {
+            var testData =  new List<object[]>
+            {
+                new object[]  { "Mohammed","abdalazim", 2500, 3500 },
+                new object[]  { "Khalid", "abdalazim", 1500, 3000 },
+                new object[]  { "Rashid", "abdalazim", 500, 3500 }
+            };
+            return testData.Take(howManyTest);
+        }
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public void CreateEmployee_CunstructInternalEmployee_SalaryMustBe2500(string firstName,
+            string lastName)
         {
 
             //Act
-            var employee = (InternalEmployee)_factory.CreateEmployee("Abdalazim", "Attya");
+            var employee = (InternalEmployee)_factory.CreateEmployee(firstName, lastName);
 
             //Assert
             Assert.Equal(2500, employee.Salary);
         }
-        [Fact]
-        public void CreateEmployee_CunstructInternalEmployee_SalaryMustBeBetween2500_3500()
+        [Theory]
+        [MemberData(nameof(TestDataMethod), 3)]
+        public void CreateEmployee_CunstructInternalEmployee_SalaryMustBeBetween2500_3500(
+            string firstName, string lastName ,int minimumSalary, int maximumSalary)
         {
             //Act
-            var employee = (InternalEmployee)_factory.CreateEmployee("Abdalazim", "Attya");
+            var employee = (InternalEmployee)_factory.CreateEmployee(firstName, lastName);
 
             //Assert
-            Assert.True(employee.Salary >= 2500 && employee.Salary <= 3500, "The Salary is not in acceptable range brother");
+            _output.WriteLine($"The employee {firstName} and his salary around {minimumSalary} - {maximumSalary}");
+            Assert.True(employee.Salary >= minimumSalary && employee.Salary <= maximumSalary, "The Salary is not in acceptable range brother");
         }
         [Fact]
         public void CreateEmployee_CunstructInternalEmployee_SalaryMustInRange2500_3500()

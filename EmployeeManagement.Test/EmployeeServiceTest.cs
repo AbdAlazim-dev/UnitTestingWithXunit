@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace EmployeeManagement.Test
 {
@@ -16,9 +17,13 @@ namespace EmployeeManagement.Test
     public class EmployeeServiceTest //: IClassFixture<EmployeeServiceFixture>
     {
         private readonly EmployeeServiceFixture _employeeServiceFixture;
-        public EmployeeServiceTest(EmployeeServiceFixture employeeServiceFixture) 
+        private readonly ITestOutputHelper _testOutputHelper;
+        public EmployeeServiceTest(
+            EmployeeServiceFixture employeeServiceFixture,
+            ITestOutputHelper testOutputHelper) 
         {
             _employeeServiceFixture = employeeServiceFixture;
+            _testOutputHelper = testOutputHelper;
         }
         [Fact]
         public void CreateInternalEmployee_InternalEmployeeCreated_MustBeAttendedTheFirstObligotoryCourse_WithObject()
@@ -93,7 +98,7 @@ namespace EmployeeManagement.Test
             Assert.Equal(obligotoryCourses, internalEmployee.AttendedCourses);
         }
         [Theory]
-        [ClassData(typeof(EmployeeServiceTestData))]
+        [ClassData(typeof(StronglyTypedEmployeeServiceTestData))]
         public async Task GiveRise_RiseBellowMinmumGivin_ExceptionMustBeThrown(int rise,
             bool minmumRiseGiven)
         {
