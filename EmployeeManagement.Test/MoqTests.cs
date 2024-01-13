@@ -1,6 +1,7 @@
 ﻿
 using EmployeeManagement.Business;
 using EmployeeManagement.DataAccess.Entities;
+using EmployeeManagement.DataAccess.Services;
 using EmployeeManagement.Services.Test;
 using EmployeeManagement.Test.Fixture;
 using Moq;
@@ -39,6 +40,30 @@ namespace EmployeeManagement.Test
             //Assert : Check if the internal employee attended the first obligatory course
             //Assert.Contains(obligotoryCourse, internalEmployee.AttendedCourses);
             Assert.Equal("Abdalazim", internalEmployee.FirstName);
+        }
+        [Fact]
+        public void FetchInternalEmployee_EmployeeFetched_SuggetstedBounceMustBeCalculatedCurrectyly()
+        {
+            //arrange
+            var employeeRepositoryMock = new Mock<IEmployeeManagementRepository>();
+            employeeRepositoryMock.Setup(m => m.GetInternalEmployee(It.IsAny<Guid>()))
+                .Returns(new InternalEmployee("Abdalazim", "Attya", 2, 2500, true, 2)
+                {
+                    AttendedCourses = new List<Course> { 
+                        new Course("Course"),
+                        new Course("Another Course")
+                    }
+                });
+            var employeeFactoryMock = new Mock<EmployeeFactory>();
+            var employeeService = new EmployeeService(employeeRepositoryMock.Object
+                , employeeFactoryMock.Object);
+
+            //Act
+            var employee = employeeService.FetchInternalEmployee(Guid.Empty);
+
+            //Assert 
+            Assert.InRange(employee.SuggestedBonus, 200, 500);
+
         }
     }
 }
