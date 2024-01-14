@@ -216,5 +216,6 @@ namespace EmployeeManagement.Business
                     * employee.AttendedCourses.Count * 100;
             }
         }
+
     }
 }

@@ -42,12 +42,12 @@ namespace EmployeeManagement.Test
             Assert.Equal("Abdalazim", internalEmployee.FirstName);
         }
         [Fact]
-        public void FetchInternalEmployee_EmployeeFetched_SuggetstedBounceMustBeCalculatedCurrectyly()
+        public async Task FetchInternalEmployee_EmployeeFetched_SuggetstedBounceMustBeCalculatedCurrectyly()
         {
             //arrange
             var employeeRepositoryMock = new Mock<IEmployeeManagementRepository>();
-            employeeRepositoryMock.Setup(m => m.GetInternalEmployee(It.IsAny<Guid>()))
-                .Returns(new InternalEmployee("Abdalazim", "Attya", 2, 2500, true, 2)
+            employeeRepositoryMock.Setup(m => m.GetInternalEmployeeAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new InternalEmployee("Abdalazim", "Attya", 2, 2500, true, 2)
                 {
                     AttendedCourses = new List<Course> { 
                         new Course("Course"),
@@ -59,10 +59,10 @@ namespace EmployeeManagement.Test
                 , employeeFactoryMock.Object);
 
             //Act
-            var employee = employeeService.FetchInternalEmployee(Guid.Empty);
+            var employee = await employeeService.FetchInternalEmployeeAsync(Guid.Empty);
 
             //Assert 
-            Assert.InRange(employee.SuggestedBonus, 200, 500);
+            Assert.Equal(employee.SuggestedBonus, 400);
 
         }
     }

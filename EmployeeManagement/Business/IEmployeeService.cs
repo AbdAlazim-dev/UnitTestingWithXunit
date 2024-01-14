@@ -17,6 +17,7 @@ namespace EmployeeManagement.Business
         InternalEmployee? FetchInternalEmployee(Guid employeeId);
         Task<InternalEmployee?> FetchInternalEmployeeAsync(Guid employeeId);
         Task<IEnumerable<InternalEmployee>> FetchInternalEmployeesAsync();
+
         Task GiveMinimumRaiseAsync(InternalEmployee employee);
         Task GiveRaiseAsync(InternalEmployee employee, int raise);
         void NotifyOfAbsence(Employee employee);
