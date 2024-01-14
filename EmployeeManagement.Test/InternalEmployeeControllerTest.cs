@@ -12,8 +12,9 @@ namespace EmployeeManagement.Test
 {
     public class InternalEmployeeControllerTest
     {
-        [Fact]
-        public async Task GetInternalEmployee_GetAction_ReturnTypeMustBeObjectResult()
+        private readonly InternalEmployeesController _internalEmployeeController;
+
+        public InternalEmployeeControllerTest() 
         {
             // Arrange 
             var employeeServiceMock = new Mock<IEmployeeService>();
@@ -25,16 +26,38 @@ namespace EmployeeManagement.Test
                     new InternalEmployee("abdula", "Mohammed", 2, 2500, false, 1),
                     new InternalEmployee("Ahmed", "Rashid", 2, 2500, false, 1)
                 });
-            var internalEmployeeController = new InternalEmployeesController(employeeServiceMock.Object, null);
+            _internalEmployeeController = new
+                InternalEmployeesController(employeeServiceMock.Object, null);
+        }
+        [Fact]
+        public async Task GetInternalEmployee_GetAction_ReturnTypeMustBeObjectResult()
+        {
+            
 
             // Act 
-            var result = await internalEmployeeController.GetInternalEmployees();
+            var result = await _internalEmployeeController.GetInternalEmployees();
 
             //Assert
-            var actionResult = 
+            var actionRestult = 
                 Assert.IsType<ActionResult<IEnumerable<Models.InternalEmployeeDto>>>(result);
+            
+            //result here is the type of the result we will get and 
+            //actionResult drived from ObjectResult so it will be true
+            Assert.IsType<OkObjectResult>(actionRestult.Result);
+        }
+        [Fact]
+        public async Task GetInternalEmployess_GetAction_ResultTypeMustBeIEnumerableOfInternalEmployeeDtoAsModelType()
+        {
+            
+            // Act 
+            var result = await _internalEmployeeController.GetInternalEmployees();
 
-            Assert.IsType<OkObjectResult>(actionResult.Result);
+            //Assert 
+            var actionResult = Assert
+                .IsType<ActionResult<IEnumerable<Models.InternalEmployeeDto>>>(result);
+
+            Assert.IsAssignableFrom<IEnumerable<Models.InternalEmployeeDto>>(
+                ((OkObjectResult)actionResult.Result).Value);
         }
     }
 }
