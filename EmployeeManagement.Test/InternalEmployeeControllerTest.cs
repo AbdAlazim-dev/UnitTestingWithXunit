@@ -5,9 +5,13 @@ using EmployeeManagement.Business;
 using EmployeeManagement.Controllers;
 using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.DataAccess.Services;
+using EmployeeManagement.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.Json;
 
 namespace EmployeeManagement.Test
 {
@@ -15,9 +19,15 @@ namespace EmployeeManagement.Test
     {
         private readonly InternalEmployeesController _internalEmployeeController;
         private readonly InternalEmployee _firstEmployee;
+        private readonly InternalEmployeeForCreationDto _abdalazim;
         public InternalEmployeeControllerTest() 
         {
             _firstEmployee = new InternalEmployee("Morgan", "Freman", 2, 2500, false, 1);
+            _abdalazim = new InternalEmployeeForCreationDto()
+            {
+                FirstName = "Abdalazim",
+                LastName = "Attya",
+            };
             // Arrange 
             var employeeServiceMock = new Mock<IEmployeeService>();
             employeeServiceMock
@@ -28,6 +38,9 @@ namespace EmployeeManagement.Test
                     new InternalEmployee("abdula", "Mohammed", 2, 2500, false, 1),
                     new InternalEmployee("Ahmed", "Rashid", 2, 2500, false, 1)
                 });
+            employeeServiceMock.Setup(m =>
+            m.CreateInternalEmployee(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new InternalEmployee("abdalazim","Attya", 2, 2500, false, 2));
 
             //var mapperMock = new Mock<IMapper>();
             //mapperMock.Setup(m =>

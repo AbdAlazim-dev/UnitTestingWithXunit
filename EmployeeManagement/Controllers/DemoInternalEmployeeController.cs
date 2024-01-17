@@ -2,6 +2,7 @@
 using EmployeeManagement.Business;
 using EmployeeManagement.DataAccess.Entities;
 using EmployeeManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Controllers
@@ -37,6 +38,16 @@ namespace EmployeeManagement.Controllers
             return CreatedAtAction("GetInternalEmployee",
                 _mapper.Map<InternalEmployeeDto>(internalEmployee),
                 new { employeeId = internalEmployee.Id });
+        }
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetProtectedInternalEmployee()
+        {
+            if(User.IsInRole("Admin"))
+            {
+                return RedirectToAction("GetInternalEmployees", "GetProtectedInternalEmployees");
+            }
+            return RedirectToAction("GetInternalEmployees", "GetInternalEmployee");
         }
     }
 }
