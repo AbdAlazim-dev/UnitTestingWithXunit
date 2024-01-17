@@ -1,5 +1,6 @@
 ﻿
 
+using AutoMapper;
 using EmployeeManagement.Business;
 using EmployeeManagement.Controllers;
 using EmployeeManagement.DataAccess.Entities;
@@ -27,8 +28,19 @@ namespace EmployeeManagement.Test
                     new InternalEmployee("abdula", "Mohammed", 2, 2500, false, 1),
                     new InternalEmployee("Ahmed", "Rashid", 2, 2500, false, 1)
                 });
+
+            //var mapperMock = new Mock<IMapper>();
+            //mapperMock.Setup(m =>
+            //m.Map<InternalEmployee, Models.InternalEmployeeDto>
+            //(It.IsAny<InternalEmployee>()));
+
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            cfg.AddProfile<MapperProfiles.EmployeeProfile>());
+
+            var mapper = new Mapper(mapperConfiguration);
+
             _internalEmployeeController = new
-                InternalEmployeesController(employeeServiceMock.Object, null);
+                InternalEmployeesController(employeeServiceMock.Object, mapper);
         }
         [Fact]
         public async Task GetInternalEmployee_GetAction_ReturnTypeMustBeObjectResult()
