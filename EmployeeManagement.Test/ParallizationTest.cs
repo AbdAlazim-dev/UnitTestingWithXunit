@@ -1,8 +1,7 @@
 ﻿
 namespace EmployeeManagement.Test
 {
-    [CollectionDefinition("the parallam", DisableParallelization = true)]
-    [Collection(name: "the parallam")]
+    [CollectionDefinition("parallam", DisableParallelization = true)]
     public class ParallizationTest
     {
 
