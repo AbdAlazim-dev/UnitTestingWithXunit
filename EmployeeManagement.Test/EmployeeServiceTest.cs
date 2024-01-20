@@ -99,8 +99,8 @@ namespace EmployeeManagement.Test
         }
         [Theory]
         [ClassData(typeof(StronglyTypedEmployeeServiceTestData))]
-        public async Task GiveRise_RiseBellowMinmumGivin_ExceptionMustBeThrown(int rise,
-            bool minmumRiseGiven)
+        [Trait("Catogary", "Exceptions")]
+        public async Task GiveRise_RiseBellowMinmumGivin_ExceptionMustBeThrown(int rise)
         {
 
             var internalEmployee = new InternalEmployee("Abdalazim", "Attya", 1, 2500, false, 1);
@@ -109,20 +109,6 @@ namespace EmployeeManagement.Test
             await Assert.ThrowsAsync<EmployeeInvalidRaiseException>(async () =>
             {
                 await _employeeServiceFixture.EmployeeService.GiveRaiseAsync(internalEmployee, rise);
-            });
-
-        }
-        [Fact]
-        public void GiveRise_RiseBellowMinmumGivin_ExceptionMustBeThrown_Mistak()
-        {
-
-            var internalEmployee = new InternalEmployee("Abdalazim", "Attya", 1, 2500, false, 1);
-
-            //Act & Assert
-            //this wont check if this exception is the same as the exception was thrown because we did not await it
-            Assert.ThrowsAsync<Exception>(async () =>
-            {
-                await _employeeServiceFixture.EmployeeService.GiveRaiseAsync(internalEmployee, 5);
             });
 
         }

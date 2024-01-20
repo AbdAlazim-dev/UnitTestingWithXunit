@@ -2,15 +2,15 @@
 
 namespace EmployeeManagement.Test.TestData
 {
-    public class StronglyTypedEmployeeServiceTestData : TheoryData<int, bool>
+    public class StronglyTypedEmployeeServiceTestData : TheoryData<int>
     {
         public StronglyTypedEmployeeServiceTestData() 
         {
-            Add(100, true);
-            Add(300, false);
-            Add(200, false);
-            Add(500, false);
-            Add(600, true);
+            Add(10);
+            Add(30);
+            Add(20);
+            Add(50);
+            Add(60);
 
         }
     }
